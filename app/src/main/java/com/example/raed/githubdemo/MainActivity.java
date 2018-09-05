@@ -5,11 +5,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.raed.githubdemo.model.Repo;
+import com.example.raed.githubdemo.network.RepoCallBack;
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements RepoCallBack.CompletedRequestListener{
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +46,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCompleteRequest(List<Repo> repoList) {
+        Log.d(TAG, "onCompleteRequest: called");
+        for (Repo repo : repoList) {
+            Log.d(TAG, "onCompleteRequest: " + repo.getDescription());
+        }
     }
 }
