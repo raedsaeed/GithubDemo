@@ -1,13 +1,11 @@
 package com.example.raed.githubdemo.mainactivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +25,6 @@ import static com.example.raed.githubdemo.dialogs.BrowseDialog.EXTRA_REPO;
 
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
     private static final String TAG = "RepoAdapter";
-
-    private static final int ITEM = 0;
-    private static final int LOADING = 1;
-
-    private boolean isLoadingAdded = false;
 
     private List<Repo> repoList;
     private Context context;
@@ -65,11 +58,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
     @Override
     public int getItemCount() {
         return (repoList != null) ? repoList.size() : 0;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return (position == repoList.size() -1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
     public void loadData(List<Repo> repoList) {

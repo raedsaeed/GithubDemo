@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public interface Main {
+    //The Presenter Interface, which is implemented in MainPresenter class
     interface Presenter {
         void requestData (int pageNumber);
         void refreshData (int pageNumber);
@@ -16,6 +17,7 @@ public interface Main {
         void clearData ();
     }
 
+    //The View Interface, which is implemented in MainActivity class.
     interface View {
         void showNewData(List<Repo> repoList);
         void showMoreData(List<Repo> repoList);

@@ -29,6 +29,7 @@ public class RepoCallBack implements Callback<List<Repo>> {
 
     private RepoCallBack (CompletedRequestListener listener) {
         if (retrofit == null) {
+            // Initialize Retrofit member variable
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -58,7 +59,6 @@ public class RepoCallBack implements Callback<List<Repo>> {
     @Override
     public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
         List<Repo> repos = response.body();
-        Log.d(TAG, "onResponse: " + pageNumber);
         if (pageNumber > CURRENT_PAGE) {
             listener.onCompleteMoreRequest(repos);
         }else {
@@ -71,6 +71,8 @@ public class RepoCallBack implements Callback<List<Repo>> {
         listener.onFailureRequest();
     }
 
+    // CompletedRequestListener interface used for checking if the requests successful or not
+    // the interface implemented in MainPresenter class
     public interface CompletedRequestListener {
         void onCompleteRequest(List<Repo> repoList);
         void onCompleteMoreRequest (List<Repo> repoList);

@@ -18,14 +18,21 @@ public class MainPresenter implements Main.Presenter, RepoCallBack.CompletedRequ
         com.example.raed.githubdemo.model.local.Interceptor.OnLoadData{
     private static final String TAG = "MainPresenter";
 
-    private Main.View viewListner;
+    // View Listener which is implemented in MainActivity class
+    private Main.View viewListener;
+
+    // Static member variable of MainPresenter
     private static MainPresenter presenter;
+
+    // Interceptor member variable that handle database operations.
     private Interceptor interceptor;
+
+    // Integer used in case if there is no local data
     private static int pageNumber = 1;
 
 
     private MainPresenter (Context context) {
-            this.viewListner = (Main.View)context;
+            this.viewListener = (Main.View)context;
             interceptor = new Interceptor(context, this);
     }
 
@@ -36,21 +43,25 @@ public class MainPresenter implements Main.Presenter, RepoCallBack.CompletedRequ
         return presenter;
     }
 
+    // Pull data from network for the first time
     @Override
     public void requestData(int pageNumber) {
         RepoCallBack.getInstance(this).getRepoList(pageNumber);
     }
 
+    // Refresh available data
     @Override
     public void refreshData(int pageNumber) {
         RepoCallBack.getInstance(this).refreshList(pageNumber);
     }
 
+    // Load Data from storage if it exist
     @Override
     public void loadLocalData() {
         interceptor.loadFromStorage();
     }
 
+    // Clear data in storage
     @Override
     public void clearData() {
         interceptor.clearRepos();
@@ -58,19 +69,19 @@ public class MainPresenter implements Main.Presenter, RepoCallBack.CompletedRequ
 
     @Override
     public void onCompleteRequest(List<Repo> repoList) {
-        viewListner.showNewData(repoList);
+        viewListener.showNewData(repoList);
         interceptor.addRepos(repoList);
     }
 
     @Override
     public void onCompleteMoreRequest(List<Repo> repoList) {
-        viewListner.showMoreData(repoList);
+        viewListener.showMoreData(repoList);
         interceptor.addRepos(repoList);
     }
 
     @Override
     public void onFailureRequest() {
-        viewListner.savedState();
+        viewListener.savedState();
     }
 
     @Override
@@ -78,7 +89,7 @@ public class MainPresenter implements Main.Presenter, RepoCallBack.CompletedRequ
         if (repoList == null) {
             requestData(pageNumber);
         }else {
-            viewListner.showLocalData(repoList);
+            viewListener.showLocalData(repoList);
         }
     }
 }

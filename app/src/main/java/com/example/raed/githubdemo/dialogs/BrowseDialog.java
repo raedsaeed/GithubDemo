@@ -23,6 +23,7 @@ public class BrowseDialog extends DialogFragment {
     private static final String TAG = "BrowseDialog";
     public static final String EXTRA_REPO = "com.example.raed.dialog.EXTRA_REPO";
 
+    // Context for initializing LayoutInflater
     private Context context;
 
     @Override
@@ -34,11 +35,17 @@ public class BrowseDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Initialize LayoutInflater from SystemService
         LayoutInflater inflater =(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //Inflate the view from dialog layout
         View view = inflater.inflate(R.layout.browse_dialog, null, false);
+
+        //Create Dialog Builder and set the inflated view to it.
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view);
 
+        //Initialize TextViews
         TextView repoLink = view.findViewById(R.id.repo_link);
         repoLink.setMovementMethod(LinkMovementMethod.getInstance());
 
