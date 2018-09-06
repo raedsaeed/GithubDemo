@@ -33,6 +33,11 @@ public class MainPresenter implements Main.Presenter, RepoCallBack.CompletedRequ
     }
 
     @Override
+    public void refreshData(int pageNumber) {
+        RepoCallBack.getInstance(this).refreshList(pageNumber);
+    }
+
+    @Override
     public void onCompleteRequest(List<Repo> repoList) {
         viewListner.showData(repoList);
     }

@@ -3,6 +3,7 @@ package com.example.raed.githubdemo.mainactivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     private RepoAdapter adapter;
     private RecyclerView recyclerView;
     private static int pageNumber = 1;
+    private int currentPageNumber = 1;
     private MainPresenter presenter;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,6 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         setSupportActionBar(toolbar);
         presenter = MainPresenter.getInstance(this);
         presenter.requestData(pageNumber);
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         adapter = new RepoAdapter(this);
         recyclerView = findViewById(R.id.repo_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -48,9 +45,10 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        final EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(final int page, int totalItemsCount, RecyclerView view) {
+                currentPageNumber = page;
                 view.post(new Runnable() {
                     @Override
                     public void run() {
@@ -61,6 +59,22 @@ public class MainActivity extends AppCompatActivity implements Main.View {
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
+
+        refreshLayout = findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                scrollListener.resetState();
+                refreshLayout.setRefreshing(true);
+                presenter.refreshData(currentPageNumber);
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -87,8 +101,10 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
     @Override
     public void showData(List<Repo> repoList) {
+        adapter.clear();
         if (repoList != null) {
             adapter.loadData(repoList);
+            refreshLayout.setRefreshing(false);
         }else {
             Log.d(TAG, "showData: data is null");
         }

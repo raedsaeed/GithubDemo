@@ -16,4 +16,9 @@ public interface GithubApiService {
     @GET("repos")
     Call<List<Repo>> getRepos (@Query("page") int pageNumber,
                                @Query("per_page") int limit);
+
+    @GET("repos")
+    Call<List<Repo>> getRepos (@Query("access_token") String token,
+                               @Query("page") int pageNumber,
+                               @Query("per_page") int limit);
 }

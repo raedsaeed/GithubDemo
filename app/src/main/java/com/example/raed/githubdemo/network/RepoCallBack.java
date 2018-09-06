@@ -49,10 +49,16 @@ public class RepoCallBack implements Callback<List<Repo>> {
         response.enqueue(this);
     }
 
+    public void refreshList (int pageNumber) {
+        this.pageNumber = 1;
+        Call<List<Repo>> response = apiService.getRepos(pageNumber, 10);
+        response.enqueue(this);
+    }
+
     @Override
     public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-        Log.d(TAG, "onResponse: "+response.toString());
         List<Repo> repos = response.body();
+        Log.d(TAG, "onResponse: " + pageNumber);
         if (pageNumber > CURRENT_PAGE) {
             listener.onCompleteMoreRequest(repos);
         }else {

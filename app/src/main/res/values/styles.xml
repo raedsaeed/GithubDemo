@@ -11,8 +11,10 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        // For cardView theme bug.
+        <!--// For cardView theme bug.-->
         <item name="cardViewStyle">@style/CardView</item>
+        <!--For coordinatorLayout theme bug-->
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

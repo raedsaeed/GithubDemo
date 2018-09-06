@@ -75,15 +75,14 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
         this.repoList.addAll(repos);
         notifyItemRangeInserted(getItemCount(), repoList.size() -1);
     }
-//
-//    public void clear() {
-//        isLoadingAdded = false;
-//        while (getItemCount() > 0) {
-//            repoList.clear();
-//            notifyDataSetChanged();
-//        }
-//    }
-//
+
+    public void clear() {
+        if (repoList != null) {
+            repoList.clear();
+            notifyDataSetChanged();
+        }
+    }
+
 //    public boolean isEmpty () {
 //        return getItemCount() == 0;
 //    }

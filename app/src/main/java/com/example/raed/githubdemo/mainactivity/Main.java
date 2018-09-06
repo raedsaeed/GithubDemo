@@ -11,6 +11,7 @@ import java.util.List;
 public interface Main {
     interface Presenter {
         void requestData (int pageNumber);
+        void refreshData (int pageNumber);
     }
 
     interface View {
