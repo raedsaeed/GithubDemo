@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.example.raed.githubdemo.R;
 import com.example.raed.githubdemo.model.Repo;
-import com.example.raed.githubdemo.network.RepoCallBack;
+import com.example.raed.githubdemo.recyclershelpers.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
 
@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
     private RepoAdapter adapter;
     private RecyclerView recyclerView;
-
+    private static int pageNumber = 1;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        MainPresenter.getInstance(this).requestData();
+        presenter = MainPresenter.getInstance(this);
+        presenter.requestData(pageNumber);
     }
 
 
@@ -46,6 +48,19 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(final int page, int totalItemsCount, RecyclerView view) {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.requestData(page);
+                    }
+                });
+
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -72,9 +87,15 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
     @Override
     public void showData(List<Repo> repoList) {
-        for (Repo repo :repoList) {
-            Log.d(TAG, "showData: " + repo.getName());
+        if (repoList != null) {
+            adapter.loadData(repoList);
+        }else {
+            Log.d(TAG, "showData: data is null");
         }
-        adapter.loadData(repoList);
+    }
+
+    @Override
+    public void showMoreData(List<Repo> repoList) {
+        adapter.loadMoreData(repoList);
     }
 }

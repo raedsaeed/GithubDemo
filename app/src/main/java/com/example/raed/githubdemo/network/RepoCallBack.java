@@ -23,6 +23,8 @@ public class RepoCallBack implements Callback<List<Repo>> {
     private static Retrofit retrofit;
     private static GithubApiService apiService;
     private CompletedRequestListener listener;
+    private static final int CURRENT_PAGE = 1;
+    private int pageNumber = 1;
 
 
     private RepoCallBack (CompletedRequestListener listener) {
@@ -41,15 +43,21 @@ public class RepoCallBack implements Callback<List<Repo>> {
         return new RepoCallBack(listener);
     }
 
-    public void getRepoList () {
-        Call<List<Repo>> response = apiService.getRepos(1, 10);
+    public void getRepoList (int pageNumber) {
+        this.pageNumber = pageNumber;
+        Call<List<Repo>> response = apiService.getRepos(pageNumber, 10);
         response.enqueue(this);
     }
 
     @Override
     public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+        Log.d(TAG, "onResponse: "+response.toString());
         List<Repo> repos = response.body();
-        listener.onCompleteRequest(repos);
+        if (pageNumber > CURRENT_PAGE) {
+            listener.onCompleteMoreRequest(repos);
+        }else {
+            listener.onCompleteRequest(repos);
+        }
     }
 
     @Override
@@ -58,6 +66,7 @@ public class RepoCallBack implements Callback<List<Repo>> {
     }
 
     public interface CompletedRequestListener {
-        void onCompleteRequest (List<Repo> repoList);
+        void onCompleteRequest(List<Repo> repoList);
+        void onCompleteMoreRequest (List<Repo> repoList);
     }
 }

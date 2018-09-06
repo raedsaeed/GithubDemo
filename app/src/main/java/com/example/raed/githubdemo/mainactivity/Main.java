@@ -10,10 +10,11 @@ import java.util.List;
 
 public interface Main {
     interface Presenter {
-        void requestData ();
+        void requestData (int pageNumber);
     }
 
     interface View {
         void showData (List<Repo> repoList);
+        void showMoreData(List<Repo> repoList);
     }
 }
