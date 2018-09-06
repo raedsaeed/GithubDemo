@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.example.raed.githubdemo"
+            android:name=".model.local.RepoContentProvider"/>
     </application>
 
 </manifest>

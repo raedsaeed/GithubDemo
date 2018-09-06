@@ -68,11 +68,12 @@ public class RepoCallBack implements Callback<List<Repo>> {
 
     @Override
     public void onFailure(Call<List<Repo>> call, Throwable t) {
-        Log.d(TAG, "onFailure: " + t.getMessage());
+        listener.onFailureRequest();
     }
 
     public interface CompletedRequestListener {
         void onCompleteRequest(List<Repo> repoList);
         void onCompleteMoreRequest (List<Repo> repoList);
+        void onFailureRequest ();
     }
 }

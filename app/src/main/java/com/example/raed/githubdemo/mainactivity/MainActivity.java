@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
     private RepoAdapter adapter;
     private RecyclerView recyclerView;
-    private static int pageNumber = 1;
     private int currentPageNumber = 1;
     private MainPresenter presenter;
     private SwipeRefreshLayout refreshLayout;
@@ -37,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         presenter = MainPresenter.getInstance(this);
-        presenter.requestData(pageNumber);
+        presenter.loadLocalData();
+
         adapter = new RepoAdapter(this);
         recyclerView = findViewById(R.id.repo_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -71,12 +71,6 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         });
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -100,18 +94,28 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     }
 
     @Override
-    public void showData(List<Repo> repoList) {
+    public void showLocalData(List<Repo> repoList) {
         adapter.clear();
+        adapter.loadData(repoList);
+    }
+
+    @Override
+    public void showNewData(List<Repo> repoList) {
+        adapter.clear();
+        presenter.clearData();
         if (repoList != null) {
             adapter.loadData(repoList);
             refreshLayout.setRefreshing(false);
-        }else {
-            Log.d(TAG, "showData: data is null");
         }
     }
 
     @Override
     public void showMoreData(List<Repo> repoList) {
         adapter.loadMoreData(repoList);
+    }
+
+    @Override
+    public void savedState() {
+        refreshLayout.setRefreshing(false);
     }
 }

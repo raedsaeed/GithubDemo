@@ -12,10 +12,14 @@ public interface Main {
     interface Presenter {
         void requestData (int pageNumber);
         void refreshData (int pageNumber);
+        void loadLocalData ();
+        void clearData ();
     }
 
     interface View {
-        void showData (List<Repo> repoList);
+        void showNewData(List<Repo> repoList);
         void showMoreData(List<Repo> repoList);
+        void showLocalData (List<Repo> repoList);
+        void savedState();
     }
 }
