@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Github Demo</string>
     <string name="action_settings">Settings</string>
+    <string name="go_to_repo_link">Go To Repo Link</string>
 </resources>

@@ -50,7 +50,7 @@ public class Repo implements Parcelable{
         return owner;
     }
 
-    public String getHtml_url() {
+    public String getHtmlUrl() {
         return html_url;
     }
 

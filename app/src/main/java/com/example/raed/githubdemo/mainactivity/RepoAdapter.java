@@ -1,7 +1,10 @@
 package com.example.raed.githubdemo.mainactivity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.raed.githubdemo.R;
+import com.example.raed.githubdemo.dialogs.BrowseDialog;
 import com.example.raed.githubdemo.model.Repo;
 
 import java.util.List;
+
+import static com.example.raed.githubdemo.dialogs.BrowseDialog.EXTRA_REPO;
 
 /**
  * Created by raed on 9/5/18.
@@ -83,7 +89,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
         }
     }
 
-    class RepoViewHolder extends RecyclerView.ViewHolder {
+    class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
         TextView repoName, repoDescription, repoOwner;
         CardView cardView;
 
@@ -93,13 +99,20 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
             repoDescription = itemView.findViewById(R.id.repo_description);
             repoOwner = itemView.findViewById(R.id.repo_owner);
             cardView = itemView.findViewById(R.id.card_view);
+            cardView.setOnLongClickListener(this);
         }
-    }
 
-    class LoadingViewHolder extends RecyclerView.ViewHolder {
-
-        public LoadingViewHolder(View itemView) {
-            super(itemView);
+        @Override
+        public boolean onLongClick(View v) {
+            int position = getAdapterPosition();
+            Repo repo = repoList.get(position);
+            Bundle args = new Bundle();
+            args.putParcelable(EXTRA_REPO, repo);
+            BrowseDialog browseDialog = new BrowseDialog();
+            browseDialog.setArguments(args);
+            AppCompatActivity activity = (AppCompatActivity)context;
+            browseDialog.show(activity.getSupportFragmentManager(), null);
+            return true;
         }
     }
 }

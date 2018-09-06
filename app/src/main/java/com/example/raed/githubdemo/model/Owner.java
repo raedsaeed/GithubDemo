@@ -9,13 +9,16 @@ import android.os.Parcelable;
 
 public class Owner implements Parcelable{
     private String login;
+    private String html_url;
 
-    public Owner(String login) {
+    public Owner(String login, String html_url) {
         this.login = login;
+        this.html_url = html_url;
     }
 
     protected Owner(Parcel in) {
         login = in.readString();
+        html_url = in.readString();
     }
 
     public static final Creator<Owner> CREATOR = new Creator<Owner>() {
@@ -34,6 +37,10 @@ public class Owner implements Parcelable{
         return login;
     }
 
+    public String getHtmlUrl() {
+        return html_url;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -42,5 +49,6 @@ public class Owner implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(login);
+        dest.writeString(html_url);
     }
 }
