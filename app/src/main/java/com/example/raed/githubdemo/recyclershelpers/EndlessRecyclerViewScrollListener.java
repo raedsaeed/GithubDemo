@@ -23,7 +23,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // True if we are still waiting for the last set of data to load.
     private boolean loading = true;
     // Sets the starting page index
-    private int startingPageIndex = 0;
+    private int startingPageIndex = 1;
 
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -84,7 +84,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
-        Log.d(TAG, "onScrolled: ");
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
             onLoadMore(currentPage, totalItemCount, view);

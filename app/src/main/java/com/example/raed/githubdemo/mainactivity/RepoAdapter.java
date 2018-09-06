@@ -83,18 +83,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
         }
     }
 
-//    public boolean isEmpty () {
-//        return getItemCount() == 0;
-//    }
-//
-//    public void addLoadingFooter () {
-//        isLoadingAdded = true;
-//    }
-//
-//    public void removeLoadingFooter () {
-//        isLoadingAdded = false;
-//    }
-
     class RepoViewHolder extends RecyclerView.ViewHolder {
         TextView repoName, repoDescription, repoOwner;
         CardView cardView;
